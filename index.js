@@ -1,34 +1,90 @@
 const inquirer = require('inquirer');
-const fs = require('fs/promises');
+const { writeFile } = require('fs/promises');
+const {Circle, Square, Triangle} = require('./lib/shapes.js');
 
 const questions = [
     {
         type: 'input',
         name: 'text',
-        message: 'Please choose 3 characters for the logo:',
+        message: 'Please choose up to 3 characters for the logo:',
+        validate: function(text) {
+            if (text.length <= 3) {
+                return true;
+            } else {
+                console.log("\nEnter max of 3 characters");
+                return false;
+            }
+        }
     },
     {
         type: 'input',
         name: 'color',
-        message: 'Please enter the text color:',
+        message: 'Please enter the text color (color keyword or #hexadecimal):',
     },
     {
         type: 'input',
         name: 'objColor',
-        message: 'Please enter the shape\'s color:',
+        message: 'Please enter the shape\'s color (color keyword or #hexadecimal):',
     },
     {
         type: 'list',
         name: 'shape',
         message: 'Please choose a shape for the logo',
-        choices: ['Circle', 'Square', 'Rectangle', 'Triangle']
+        choices: ['Circle', 'Square', 'Triangle']
     }
 ]
+
+
+
+function createSVGData({text, color, objColor, shape}) {
+    let svg = '';
+    switch (shape) {
+        case 'Circle': 
+            svg = new Circle(text, color, objColor);
+            break;
+        case 'Square':
+            svg = new Square(text, color, objColor);
+            break;
+        case 'Triangle':
+            svg = new Triangle(text, color, objColor);
+            break;
+        default:
+            throw new Error("Invalid Shape");
+    }
+    return svg.render();
+}
+
+function createHTML(title, svg) {
+  return `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>${title} LOGO</title>
+    </head>
+    <body>
+        ${svg}
+    </body>
+  </html>
+  `;
+}
+
+
+
 function init() {
     inquirer
         .prompt(questions)
-        .then()
+        .then((res) => {
+            // console.log(res);
+            const svg = createSVGData(res);
+            // console.log(svg);
+            const page = createHTML(res.text, svg);
+            // console.log(page);
+            return writeFile(`./${res.text}logo.html`, page);
+        })
         .catch((err) => console.log(err))
 }
+
 
 init();
