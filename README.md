@@ -3,7 +3,7 @@
 
   ## Description
   
-  This application is a SVG logo maker
+  This application is a SVG logo maker. In the CLI, user is asked for input to create the logo. The inquiries involve a maximum 3 character for the logo, color of the text, color of the object, and a choice of shape. After completing the inquiries in the command-line, the logo.svg will get produced or overwritten (if it exists) in the examples folder
   
   ## Table of Contents
   
@@ -34,7 +34,7 @@
 
   ## How to Contribute
   
-  Contribute as needed
+  Contribute as needed by forking the repo and making a pull request.
   
   <p align="right"><a href='#simplylogo'>back to top</a></p>
   

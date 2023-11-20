@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { writeFile } = require('fs/promises');
+const { writeFile, readFile } = require('fs/promises');
 const {Circle, Square, Triangle} = require('./lib/shapes.js');
 
 const questions = [
@@ -7,6 +7,7 @@ const questions = [
         type: 'input',
         name: 'text',
         message: 'Please choose up to 3 characters for the logo:',
+        //validate max of 3 characters allowed will not proceed otherwise
         validate: function(text) {
             if (text.length <= 3) {
                 return true;
@@ -35,7 +36,7 @@ const questions = [
 ]
 
 
-
+//create shape SVG data
 function createSVGData({text, color, objColor, shape}) {
     let svg = '';
     switch (shape) {
@@ -54,34 +55,13 @@ function createSVGData({text, color, objColor, shape}) {
     return svg.render();
 }
 
-function createHTML(title, svg) {
-  return `<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>${title} LOGO</title>
-    </head>
-    <body>
-        ${svg}
-    </body>
-  </html>
-  `;
-}
-
-
-
 function init() {
     inquirer
         .prompt(questions)
         .then((res) => {
-            // console.log(res);
             const svg = createSVGData(res);
-            // console.log(svg);
-            const page = createHTML(res.text, svg);
-            // console.log(page);
-            return writeFile(`./${res.text}logo.html`, page);
+            writeFile(`./examples/logo.svg`, svg);
+            return console.log("Generated logo.svg");
         })
         .catch((err) => console.log(err))
 }
