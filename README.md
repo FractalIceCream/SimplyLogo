@@ -22,7 +22,7 @@
   
   ## Usage
 
-  links
+  [link video demo here](https://drive.google.com/file/d/1SUvD_iLehfSZmf8xIwNFCpWdpLQqUXTW/view)
   
   <p align="right"><a href='#simplylogo'>back to top</a></p>
 
@@ -40,7 +40,7 @@
   
   ## Tests
 
-  Test
+  npm run test
 
   <p align="right"><a href='#simplylogo'>back to top</a></p>
 
